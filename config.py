@@ -1,6 +1,6 @@
 import os
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, MISSING
 
 from dotenv import load_dotenv
 
@@ -35,12 +35,12 @@ def _create_instance(cls):
         field_type = field_info.type
         default = field_info.default
         
-        if field_info.default_factory is not dataclass.MISSING:
+        if field_info.default_factory is not MISSING:
             default = field_info.default_factory()
-        
+
         value = _get_env_value(field_name, default, field_type)
-        
-        if value is None and default is dataclass.MISSING:
+
+        if value is None and default is MISSING:
             raise ValueError(f"{field_name} not found in .env file")
         
         kwargs[field_name] = value
